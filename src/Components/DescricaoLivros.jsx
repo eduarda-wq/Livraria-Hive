@@ -15,7 +15,7 @@ const DescricaoLivros = () => {
   useEffect(() => {
     const fetchLivro = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/livros/${id}`)
+        const response = await fetch(`https://livraria-hive-api.vercel.app/livros/${id}`)
         const data = await response.json()
         console.log("Livro carregado:", data)
         setLivro(data)
@@ -26,7 +26,7 @@ const DescricaoLivros = () => {
 
     const fetchProdutosRelacionados = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/livros`)
+        const response = await fetch(`https://livraria-hive-api.vercel.app/livros`)
         const data = await response.json()
         setProdutosRelacionados(data.filter((produto) => produto.id !== id))
       } catch (error) {

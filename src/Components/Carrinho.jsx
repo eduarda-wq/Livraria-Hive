@@ -8,7 +8,7 @@ export default function Carrinho() {
 
   const carregarCarrinho = async () => {
     try {
-      const response = await fetch("http://localhost:3000/carrinho")
+      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho")
       if (response.ok) {
         const itensCarrinho = await response.json()
         setCarrinho(itensCarrinho)
@@ -26,7 +26,7 @@ export default function Carrinho() {
 
   const removerDoCarrinho = async (livroId) => {
     try {
-      const response = await fetch(`http://localhost:3000/carrinho/${livroId}`, {
+      const response = await fetch(`https://livraria-hive-api.vercel.app/carrinho/${livroId}`, {
         method: "DELETE",
       })
 
@@ -68,7 +68,7 @@ export default function Carrinho() {
 
   const limparCarrinhoNoBackend = async () => {
     try {
-      const response = await fetch("http://localhost:3000/carrinho", {
+      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho", {
         method: "DELETE",
       });
 
