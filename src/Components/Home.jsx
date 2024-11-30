@@ -13,7 +13,7 @@ export default function Home() {
 
   const carregarLivros = async () => {
     try {
-      const response = await fetch("http://localhost:3000/livros");
+      const response = await fetch("https://livraria-hive-api.vercel.app/livros");
       if (response.ok) {
         const livrosSalvos = await response.json();
         const categorias = {
@@ -32,7 +32,7 @@ export default function Home() {
 
   const carregarCarrinho = async () => {
     try {
-      const response = await fetch("http://localhost:3000/carrinho");
+      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho");
       if (response.ok) {
         const itensCarrinho = await response.json();
         setCarrinho(itensCarrinho.length);
@@ -51,7 +51,7 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/carrinho", {
+      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function Home() {
       if (response.ok) {
         const novoEstoque = livro.estoque - 1;
 
-        await fetch(`http://localhost:3000/livros/${livro.id}`, {
+        await fetch(`https://livraria-hive-api.vercel.app/livros/${livro.id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
