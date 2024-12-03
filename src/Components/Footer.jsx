@@ -2,15 +2,15 @@
 export function Footer() {
   return (
     <>
-      <footer className="bg-[#FF8800] text-white bg-[url('./footerMobal.png')] sm:bg-[url('./footerDesc.png')] bg-cover ">
+      <footer className="bg-[#FF8800] text-white bg-[url('./footerMobal.png')] sm:bg-[url('./footerDesc.png')] bg-cover w-auto h-auto">
 
         <div className="grid grid-cols-1 gap-8 w-[17rem] p-9">
 
           <div className="">
-            <img src="/Hive.png" alt="" className="w-[8rem] sm:w-[16.125rem]"  />
+            <img src="/Hive.png" alt="" className="w-[6rem] sm:w-[16.125rem]"  />
           </div>
 
-          <div className=" grid gap-8">
+          <div className=" grid gap-3 sm:gap-8 ">
             <div>
               <h3>Address:</h3>
               <p>Level 1, 12 Sample St, Sydney NSW 2000</p>
@@ -32,7 +32,7 @@ export function Footer() {
         </div>
 
         <div className="flex justify-center sm:flex-row">
-          <hr className="w-[23rem] sm:w-[80rem] border-[1px]" />
+          <hr className="w-[18rem] sm:w-[80rem] border-[1px]" />
         </div>
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { AiOutlineHeart, AiFillHeart, AiOutlineStar } from "react-icons/ai"
+import { AiOutlineHeart, AiFillHeart, AiOutlineStar, AiFillStar } from "react-icons/ai"
 import { useParams } from "react-router-dom"
 import { Header } from "./Header"
 import { Footer } from "./Footer"
@@ -11,32 +11,94 @@ const DescricaoLivros = () => {
   const [cep, setCep] = useState("")
   const [isFavorited, setIsFavorited] = useState(false)
   const [produtosRelacionados, setProdutosRelacionados] = useState([])
+  const [avaliacao, setAvaliacao] = useState(0)
+  const [comentario, setComentario] = useState("")
+  const [avaliacoes, setAvaliacoes] = useState([])
+  const [usuarioLogado, setUsuarioLogado] = useState(null)
 
   useEffect(() => {
     const fetchLivro = async () => {
       try {
-        const response = await fetch(`https://livraria-hive-api.vercel.app/livros/${id}`)
+        const response = await fetch(`http://localhost:3000/livros/${id}`)
         const data = await response.json()
-        console.log("Livro carregado:", data)
         setLivro(data)
       } catch (error) {
         console.error("Erro ao buscar os dados do livro:", error)
       }
     }
-
-    const fetchProdutosRelacionados = async () => {
+  
+    const fetchAvaliacoes = async () => {
       try {
-        const response = await fetch(`https://livraria-hive-api.vercel.app/livros`)
+        const response = await fetch(`http://localhost:3000/avaliacoes?livroId=${id}`)
         const data = await response.json()
-        setProdutosRelacionados(data.filter((produto) => produto.id !== id))
+        setAvaliacoes(data)
       } catch (error) {
-        console.error("Erro ao buscar os produtos relacionados:", error)
+        console.error("Erro ao buscar as avaliações:", error)
       }
     }
-
+  
+    const fetchUsuario = async () => {
+      try {
+        const usuarioId = "01e0"
+        const response = await fetch(`http://localhost:3000/usuarios/${usuarioId}`)
+        const data = await response.json()
+        setUsuarioLogado(data)
+      } catch (error) {
+        console.error("Erro ao buscar os dados do usuário:", error)
+      }
+    }
+  
     fetchLivro()
-    fetchProdutosRelacionados()
+    fetchAvaliacoes()
+    fetchUsuario()
   }, [id])
+
+  const handleSubmitAvaliacao = async (e) => {
+    e.preventDefault()
+  
+    if (!avaliacao || !comentario) {
+      alert("Preencha a avaliação e o comentário antes de enviar.")
+      return
+    }
+  
+    if (!usuarioLogado) {
+      alert("Erro: Usuário não logado. Tente novamente.")
+      return
+    }
+  
+    const novaAvaliacao = {
+      livroId: id,
+      usuario: usuarioLogado.nome,
+      nota: avaliacao,
+      comentario,
+    }
+  
+    try {
+      const response = await fetch("http://localhost:3000/avaliacoes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(novaAvaliacao),
+      })
+  
+      if (response.ok) {
+        setAvaliacoes([...avaliacoes, novaAvaliacao])
+        setAvaliacao(0)
+        setComentario("")
+      } else {
+        alert("Erro ao enviar avaliação. Tente novamente.")
+      }
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error)
+    }
+  }
+
+  const renderEstrelas = (nota) => {
+    return Array(5)
+      .fill(0)
+      .map((_, index) =>
+        index < nota ? <AiFillStar key={index} size={24} color="gold" /> : <AiOutlineStar key={index} size={24} color="gray" />
+      )
+  }
 
   if (!livro) {
     return <p>Carregando livro...</p>
@@ -65,17 +127,17 @@ const DescricaoLivros = () => {
     <>
     <Header/>
       <div className="font-sans">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center sm:m-8">
+        <div className="flex flex-col pt-5 justify-center items-center sm:flex-row sm:items-center sm:justify-center sm:m-8">
           <div className="flex flex-col sm:flex-row items-center justify-center">
             <img
               src={livro.imagem}
               alt={livro.titulo}
-              className="rounded-lg w-[15rem] sm:w-[25rem]"
+              className="rounded-lg w-[12rem] sm:w-[25rem]"
             />
-            <div className="w-2/3 pl-8 flex flex-col  justify-between">
+            <div className="w-2/3 mt-2 sm:pl-10 flex flex-col justify-between sm:items-center">
               <div>
-                <div className="flex items-center justify-between">
-                  <h1 className="text-[1.5rem] sm:text-[2rem] font-bold text-gray-800">
+                <div className="flex items-center justify-between sm:justify-normal sm:gap-5">
+                  <h1 className="text-[1.4rem] sm:text-[2rem] font-bold text-gray-800">
                     {livro.titulo}
                   </h1>
                   <button onClick={toggleFavorite} className="focus:outline-none ">
@@ -127,7 +189,7 @@ const DescricaoLivros = () => {
                 </button>
               </div>
               <div className="mt-6 flex flex-col  gap-5">
-                <h2 className="text-[1.5rem] text-center justify-center items-center font-semibold text-gray-800 mb-2">
+                <h2 className="text-[1rem] sm:text-[1.5rem] text-center justify-center items-center font-semibold text-gray-800 mb-2">
                   Calcular frete e prazo de entrega
                 </h2>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -161,20 +223,20 @@ const DescricaoLivros = () => {
         </p>
       </div>
 
-      <div className="max-w-7xl w-full mt-12 m-8">
-        <h2 className="text-[1.5rem] sm:text-[2rem] m-3 font-semibold text-orange-500">
+      <div className="flex flex-col gap-3 max-w-7xl w-full mt-12 m-8">
+        <h2 className="text-[1.6rem] sm:text-[2rem] font-semibold text-orange-500">
           Produtos relacionados
         </h2>
-        <div className="grid grid-cols-1 place-items-center sm:grid-cols-3  gap-6 mt-4">
+        <div className="grid grid-cols-1  sm:grid-cols-3 gap-6">
           
           {produtosRelacionados.map((produto) => (
-            <div key={produto.id} className="border rounded-lg shadow-md p-4">
+            <div key={produto.id} className="flex flex-col items-center justify-center border rounded-lg shadow-md p-4 w-[15rem]">
               <img
                 src={produto.imagem}
                 alt={produto.titulo}
-                className="w-full h-64 object-cover rounded-md"
+                className="w-auto h-64 object-cover rounded-md"
               />
-              <h3 className="mt-4 text-lg font-semibold text-gray-800">
+              <h3 className="mt-4 text-center w-auto sm:text-lg font-semibold text-gray-800">
                 {produto.titulo}
               </h3>
               <p className="text-black font-bold mt-4 text-xl">
@@ -191,31 +253,54 @@ const DescricaoLivros = () => {
         </div>
       </div>
 
-      <div className="mt-12 p-8 bg-gray-100 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Avaliações</h2>
-        <div className="flex items-center mb-2">
-          {Array(5)
-            .fill(0)
-            .map((_, index) => (
-              <AiOutlineStar key={index} size={24} color="gray" />
-            ))}
+       <div className="mt-12 p-8 bg-gray-100 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Avaliações</h2>
+
+          {avaliacoes.length > 0 ? (
+            avaliacoes.map((avaliacao, index) => (
+              <div key={index} className="mb-4">
+                <div className="flex items-center mb-2">{renderEstrelas(avaliacao.nota)}</div>
+                <p className="text-gray-600">
+                  <strong>{avaliacao.usuario}</strong>: {avaliacao.comentario}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">Nenhuma avaliação</p>
+          )}
+
+          <form onSubmit={handleSubmitAvaliacao} className="mt-6">
+            <div className="mb-4">
+              <label className="block text-gray-700">Sua Avaliação</label>
+              <div className="flex items-center">
+                {Array(5)
+                  .fill(0)
+                  .map((_, index) => (
+                    <button
+                      type="button"
+                      key={index}
+                      onClick={() => setAvaliacao(index + 1)}
+                    >
+                      {index < avaliacao ? <AiFillStar size={24} color="gold" /> : <AiOutlineStar size={24} color="gray" />}
+                    </button>
+                  ))}
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Comentário</label>
+              <textarea
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                rows="4"
+                className="w-full border rounded-lg p-2"
+                placeholder="Escreva seu comentário aqui..."
+              />
+            </div>
+            <button type="submit" className="bg-orange-500 text-white py-2 px-4 rounded-lg">
+              Enviar Avaliação
+            </button>
+          </form>
         </div>
-        <p className="text-gray-600">
-          Classificação média: <span className="font-bold">0</span> (0 avaliações)
-        </p>
-        <button className="mt-4 text-blue-500 hover:underline">
-          Faça login para escrever uma avaliação.
-        </button>
-        <div className="mt-4 flex items-center gap-4">
-          <select className="border rounded-lg py-2 px-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>Mais recentes</option>
-          </select>
-          <select className="border rounded-lg py-2 px-4 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>Todos</option>
-          </select>
-        </div>
-        <p className="mt-6 text-gray-500">Nenhuma avaliação</p>
-      </div>
       </div>
       <Footer/>
     </>

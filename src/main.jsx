@@ -12,6 +12,7 @@ import { Cadastro } from "./Components/Cadastro.jsx";
 import Carrinho from "./Components/Carrinho.jsx";
 import DescricaoLivros from "./Components/DescricaoLivros.jsx";
 import CadastroLivros from "./Components/CadastroLivros.jsx";
+import { Perfil } from "./Components/Perfil.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
   {
     path: "cadatroLivro",
     element: <CadastroLivros/>,
+  },
+  {
+    path: "perfil",
+    element: <Perfil/>,
   },
 ]);
 

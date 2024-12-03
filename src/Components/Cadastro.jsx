@@ -1,35 +1,35 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 export function Cadastro() {
-    const [formData, setFormData] = useState({ email: "", password: "" });
-    const [message, setMessage] = useState("");
+    const [formData, setFormData] = useState({ email: "", password: "", nome: "", foto: "" })
+    const [message, setMessage] = useState("")
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Evita o recarregamento da página
+        e.preventDefault()
         try {
-            const response = await fetch("https://livraria-hive-api.vercel.app/usuarios", {
+            const response = await fetch("http://localhost:3000/usuarios", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
-            });
+            })
 
             if (response.ok) {
-                setMessage("Usuário cadastrado com sucesso!");
-                setFormData({ email: "", password: "" }); // Reseta o formulário
+                setMessage("Usuário cadastrado com sucesso!")
+                setFormData({ email: "", password: "", nome: "", foto: "" })
             } else {
-                setMessage("Erro ao cadastrar usuário.");
+                setMessage("Erro ao cadastrar usuário.")
             }
         } catch (error) {
-            setMessage("Erro ao conectar-se ao servidor.");
+            setMessage("Erro ao conectar-se ao servidor.")
         }
-    };
+    }
 
     return (
         <>
@@ -57,7 +57,29 @@ export function Cadastro() {
                             required
                             className='sm:w-[20.875rem] h-[2.0625rem] bg-[#FFA034] px-4 py-1 sm:px-4 sm:py-1 rounded-[1rem]'
                         />
-                        <button type="submit" className='sm:w-[20.875rem]  text-white bg-[#111] w-[13rem] px-4 py-1 rounded-[1rem]'>Cadastre-se</button>
+                        <input
+                            type="text"
+                            placeholder="Nome"
+                            id="nome"
+                            name="nome"
+                            value={formData.nome}
+                            onChange={handleChange}
+                            required
+                            className='sm:w-[20.875rem] h-[2.0625rem] bg-[#FFA034] px-4 py-1 sm:px-4 sm:py-1 rounded-[1rem]'
+                        />
+                        <input
+                            type="text"
+                            placeholder="URL da Foto"
+                            id="foto"
+                            name="foto"
+                            value={formData.foto}
+                            onChange={handleChange}
+                            required
+                            className='sm:w-[20.875rem] h-[2.0625rem] bg-[#FFA034] px-4 py-1 sm:px-4 sm:py-1 rounded-[1rem]'
+                        />
+                        <button type="submit" className='sm:w-[20.875rem] text-white bg-[#111] w-[13rem] px-4 py-1 rounded-[1rem]'>
+                            Cadastre-se
+                        </button>
                     </form>
                     {message && <p>{message}</p>}
                     <p>Já tem uma conta? <a href="#" className="text-blue-800">Entrar</a></p>
@@ -67,5 +89,5 @@ export function Cadastro() {
                 </div>
             </div>
         </>
-    );
+    )
 }

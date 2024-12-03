@@ -20,7 +20,7 @@ export default function PesquisaResultados() {
 
   const carregarLivros = async () => {
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/livros")
+      const response = await fetch("http://localhost:3000/livros")
       if (response.ok) {
         const livrosSalvos = await response.json()
         // Filtra livros com base no termo de pesquisa
@@ -89,7 +89,7 @@ export default function PesquisaResultados() {
     <>
       <Header />
       <div className="p-8 pb-56">
-        <h1 className="text-[1.5rem]  sm:text-[2rem] font-bold mb-8 text-orange-400">Resultados da Pesquisa</h1>
+        <h1 className="text-[1.3rem]  sm:text-[2rem] font-bold mb-8 text-orange-400">Resultados da Pesquisa</h1>
         {livros.length > 0 ? (
           <div className="grid grid-cols-1 place-items-center sm:grid-cols-3">
             {renderLivros(livros)}

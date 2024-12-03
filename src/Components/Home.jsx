@@ -13,7 +13,7 @@ export default function Home() {
 
   const carregarLivros = async () => {
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/livros");
+      const response = await fetch("http://localhost:3000/livros");
       if (response.ok) {
         const livrosSalvos = await response.json();
         const categorias = {
@@ -32,7 +32,7 @@ export default function Home() {
 
   const carregarCarrinho = async () => {
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho");
+      const response = await fetch("http://localhost:3000/carrinho");
       if (response.ok) {
         const itensCarrinho = await response.json();
         setCarrinho(itensCarrinho.length);
@@ -51,7 +51,7 @@ export default function Home() {
     }
 
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho", {
+      const response = await fetch("http://localhost:3000/carrinho", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function Home() {
       if (response.ok) {
         const novoEstoque = livro.estoque - 1;
 
-        await fetch(`https://livraria-hive-api.vercel.app/livros/${livro.id}`, {
+        await fetch(`http://localhost:3000/livros/${livro.id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export default function Home() {
     livros.map((livro) => (
       <div
         key={livro.id}
-        className="flex flex-col items-center p-2 border rounded-lg bg-white w-52 h-96 shadow-md mx-2"
+        className="flex flex-col items-center justify-center border rounded-lg bg-white w-56 h-[28rem] shadow-md mx-2"
       >
         <Link to={`/livro/${livro.id}`}>
           <div className="w-full h-60 mb-2">
@@ -103,8 +103,8 @@ export default function Home() {
             />
           </div>
         </Link>
-        <p className="text-xs text-gray-500 text-center w-full truncate">{livro.genero}</p>
-        <h3 className="font-semibold text-center text-sm mb-1 w-full truncate">
+        <p className="text-xs text-gray-500 text-center w-auto">{livro.genero}</p>
+        <h3 className="font-semibold text-center text-[1rem] w-auto">
           {livro.titulo}
         </h3>
         <p className="font-bold text-base text-black mb-1">R$ {livro.preco.toFixed(2)}</p>
@@ -147,13 +147,13 @@ export default function Home() {
 
   useEffect(() => {
     if (screenWidth <= 480) {
-      setCarouselPercentage(90); // Exibe um livro por vez em telas pequenas
+      setCarouselPercentage(90); 
     } else if (screenWidth <= 768) {
-      setCarouselPercentage(50); // Exibe dois livros por vez
+      setCarouselPercentage(50); 
     } else if (screenWidth <= 1024) {
-      setCarouselPercentage(33); // Exibe três livros por vez
+      setCarouselPercentage(33); 
     } else {
-      setCarouselPercentage(20); // Exibe quatro livros por vez
+      setCarouselPercentage(20); 
     }
   }, [screenWidth]);
 
@@ -177,10 +177,10 @@ export default function Home() {
             showThumbs={false}
             showStatus={false}
             centerMode={true}
-            centerSlidePercentage={carouselPercentage} // Usando o valor dinâmico
-            infiniteLoop={true} // Loop infinito
-            autoPlay={true} // Habilita a rotação automática
-            interval={3000} // Intervalo entre as transições (3 segundos)
+            centerSlidePercentage={carouselPercentage} 
+            infiniteLoop={true} 
+            autoPlay={true} 
+            interval={3000} 
           >
             {renderLivros(livros.lancamentos)}
           </Carousel>
@@ -190,10 +190,10 @@ export default function Home() {
           <Carousel
             showThumbs={false}
             showStatus={false}
-            centerSlidePercentage={carouselPercentage} // Usando o valor dinâmico
-            infiniteLoop={true} // Loop infinito
-            autoPlay={true} // Habilita a rotação automática
-            interval={3000} // Intervalo entre as transições (3 segundos)
+            centerSlidePercentage={carouselPercentage} 
+            infiniteLoop={true} 
+            autoPlay={true} 
+            interval={3000} 
           >
             {renderLivros(livros.destaques)}
           </Carousel>
@@ -203,10 +203,10 @@ export default function Home() {
           <Carousel
             showThumbs={false}
             showStatus={false}
-            centerSlidePercentage={carouselPercentage} // Usando o valor dinâmico
-            infiniteLoop={true} // Loop infinito
-            autoPlay={true} // Habilita a rotação automática
-            interval={3000} // Intervalo entre as transições (3 segundos)
+            centerSlidePercentage={carouselPercentage} 
+            infiniteLoop={true} 
+            autoPlay={true} 
+            interval={3000} 
           >
             {renderLivros(livros.infantis)}
           </Carousel>

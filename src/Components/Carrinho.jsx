@@ -8,7 +8,7 @@ export default function Carrinho() {
 
   const carregarCarrinho = async () => {
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho")
+      const response = await fetch("http://localhost:3000/carrinho")
       if (response.ok) {
         const itensCarrinho = await response.json()
         setCarrinho(itensCarrinho)
@@ -26,7 +26,7 @@ export default function Carrinho() {
 
   const removerDoCarrinho = async (livroId) => {
     try {
-      const response = await fetch(`https://livraria-hive-api.vercel.app/carrinho/${livroId}`, {
+      const response = await fetch(`http://localhost:3000/carrinho/${livroId}`, {
         method: "DELETE",
       })
 
@@ -68,7 +68,7 @@ export default function Carrinho() {
 
   const limparCarrinhoNoBackend = async () => {
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/carrinho", {
+      const response = await fetch("http://localhost:3000/carrinho", {
         method: "DELETE",
       });
 
@@ -101,7 +101,7 @@ export default function Carrinho() {
           <p className="text-gray-500">Seu carrinho está vazio!</p>
         ) : (
           <>
-            <div className="mb-6 flex justify-between items-center bg-white p-4 rounded shadow">
+            <div className="mb-6 flex justify-between items-center bg-white p-2 sm:p-4 gap-1 rounded shadow">
               <div>
                 <p className="text-[0.9rem] sm:text-[1.4rem] font-semibold">Subtotal selecionado:</p>
                 <p className="text-[0.8rem] sm:text-[1rem] text-orange-500 font-bold ">
@@ -109,7 +109,7 @@ export default function Carrinho() {
                 </p>
               </div>
               <button
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 sm:py-2 sm:px-6 text-[0.9rem] rounded"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-4 sm:py-2 sm:px-6 text-[0.6rem] sm:text-[1.1rem] rounded"
                 onClick={finalizarPedido}  // Agora chama a função que limpa o carrinho
                 disabled={produtosSelecionados.length === 0}
               >
@@ -133,15 +133,15 @@ export default function Carrinho() {
                   <img
                     src={item.imagem}
                     alt={item.titulo}
-                    className="w-24 h-24 object-cover rounded"
+                    className="w-12 h-auto sm:w-24 sm:h-24 object-cover rounded"
                   />
 
                   <div className="flex flex-col flex-grow ml-4">
-                    <h3 className="font-medium text-lg">{item.titulo}</h3>
-                    <p className="text-sm text-gray-500">Capa comum</p>
-                    <p className="text-sm text-green-600 font-semibold">Em estoque</p>
+                    <h3 className="font-medium text-[0.9rem] sm:text-lg">{item.titulo}</h3>
+                    <p className="text-[0.6rem] sm:text-sm text-gray-500">Capa comum</p>
+                    <p className="text-[0.6rem] sm:text-sm text-green-600 font-semibold">Em estoque</p>
 
-                    <div className="mt-2 flex space-x-4 text-sm">
+                    <div className="mt-2 flex space-x-4 text-[0.6rem] sm:text-sm">
                       <button
                         onClick={() => removerDoCarrinho(item.id)}
                         className="text-red-500 hover:underline"
@@ -168,7 +168,7 @@ export default function Carrinho() {
                         </p>
                       </div>
                     ) : (
-                      <p className="text-lg font-bold text-gray-700">
+                      <p className="text-[0.98rem] sm:text-lg font-bold text-gray-700">
                         R$ {item.preco.toFixed(2)}
                       </p>
                     )}

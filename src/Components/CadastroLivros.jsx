@@ -34,7 +34,7 @@ export default function CadastroLivros() {
     }
 
     try {
-      const response = await fetch("https://livraria-hive-api.vercel.app/livros", {
+      const response = await fetch("http://localhost:3000/livros", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
