@@ -20,7 +20,7 @@ export default function PesquisaResultados() {
 
   const carregarLivros = async () => {
     try {
-      const response = await fetch("http://localhost:3000/livros")
+      const response = await fetch("https://livraria-hive-api.vercel.app/livros")
       if (response.ok) {
         const livrosSalvos = await response.json()
         // Filtra livros com base no termo de pesquisa

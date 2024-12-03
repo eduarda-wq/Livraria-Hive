@@ -15,7 +15,7 @@ export function Header({ onSearch }) {
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem("loggedUser"))
     if (savedUser) {
-      fetch(`http://localhost:3000/usuarios/${savedUser.id}`)
+      fetch(`https://livraria-hive-api.vercel.app/usuarios/${savedUser.id}`)
         .then((res) => res.json())
         .then((data) => setLoggedUser(data))
         .catch((err) => console.error("Erro ao carregar usuário:", err))

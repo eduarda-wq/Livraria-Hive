@@ -12,7 +12,7 @@ export function Cadastro() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetch("http://localhost:3000/usuarios", {
+            const response = await fetch("https://livraria-hive-api.vercel.app/usuarios", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

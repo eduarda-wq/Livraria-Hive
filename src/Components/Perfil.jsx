@@ -17,7 +17,7 @@ export function Perfil() {
   const handleSave = async () => {
     const updatedUser = { ...user, nome: newName, foto: newPhoto }
     try {
-        const response = await fetch(`http://localhost:3000/usuarios/${user.id}`, {
+        const response = await fetch(`https://livraria-hive-api.vercel.app/usuarios/${user.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedUser),

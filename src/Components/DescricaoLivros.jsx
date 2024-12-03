@@ -19,7 +19,7 @@ const DescricaoLivros = () => {
   useEffect(() => {
     const fetchLivro = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/livros/${id}`)
+        const response = await fetch(`https://livraria-hive-api.vercel.app/livros/${id}`)
         const data = await response.json()
         setLivro(data)
       } catch (error) {
@@ -29,7 +29,7 @@ const DescricaoLivros = () => {
   
     const fetchAvaliacoes = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/avaliacoes?livroId=${id}`)
+        const response = await fetch(`https://livraria-hive-api.vercel.app/avaliacoes?livroId=${id}`)
         const data = await response.json()
         setAvaliacoes(data)
       } catch (error) {
@@ -40,7 +40,7 @@ const DescricaoLivros = () => {
     const fetchUsuario = async () => {
       try {
         const usuarioId = "01e0"
-        const response = await fetch(`http://localhost:3000/usuarios/${usuarioId}`)
+        const response = await fetch(`https://livraria-hive-api.vercel.app/usuarios/${usuarioId}`)
         const data = await response.json()
         setUsuarioLogado(data)
       } catch (error) {
@@ -74,7 +74,7 @@ const DescricaoLivros = () => {
     }
   
     try {
-      const response = await fetch("http://localhost:3000/avaliacoes", {
+      const response = await fetch("https://livraria-hive-api.vercel.app/avaliacoes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(novaAvaliacao),
